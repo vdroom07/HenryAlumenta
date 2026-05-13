@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta Persebaran SMP dan SMA di Kecamatan Tompaso</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    
+    <style>
+        /* Mengatur agar peta memenuhi seluruh layar */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+        /* Styling untuk kotak judul di atas peta */
+        .title-box {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 1000; /* Agar tampil di atas Leaflet */
+            text-align: center;
+        }
+        .title-box h1 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title-box">
+        <h1>Peta Persebaran SMP & SMA<br>Kecamatan Tompaso</h1>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        // 1. Inisialisasi Peta
+        // Set view ke rata-rata koordinat Tompaso dengan level zoom 14
+        const map = L.map('map').setView([1.185, 124.801], 14);
+
+        // 2. Tambahkan Tile Layer (Basemap) dari OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // 3. Data Sekolah dari file CSV yang kamu berikan
+        const dataSekolah = [
+            { lat: 1.1751109453635125, lng: 124.80802625515855, nama: "SMPN 1 TOMPASO" },
+            { lat: 1.1745195160665327, lng: 124.7904106300215, nama: "SMP NEGERI 2 TOMPASO" },
+            { lat: 1.1965156805563637, lng: 124.8268194492686, nama: "SMP NEGERI 3 TOMPASO" },
+            { lat: 1.1801550654817612, lng: 124.80849368368798, nama: "SMP NASIONAL TOMPASO" },
+            { lat: 1.19054577943133, lng: 124.79436929144178, nama: "SMP ADVENT TOMPASO" },
+            { lat: 1.1805387843993296, lng: 124.81134728544072, nama: "SMA NEGERI 1 TOMPASO" },
+            { lat: 1.174022, lng: 124.789679, nama: "SMA NEGERI 2 TOMPASO" },
+            { lat: 1.193981, lng: 124.792470, nama: "SMA NEGERI KEBERBAKATAN OLAHRAGA" }
+            // Jika ada baris data tambahan di file aslinya, kamu bisa menambahkannya di sini dengan format yang sama
+        ];
+
+        // 4. Melakukan iterasi (looping) untuk menambahkan marker ke peta
+        dataSekolah.forEach(sekolah => {
+            // Membuat marker
+            const marker = L.marker([sekolah.lat, sekolah.lng]).addTo(map);
+            
+            // Menambahkan popup yang muncul saat marker diklik
+            marker.bindPopup(`<b>${sekolah.nama}</b><br>Kecamatan Tompaso`);
+        });
+    </script>
+</body>
+</html>
